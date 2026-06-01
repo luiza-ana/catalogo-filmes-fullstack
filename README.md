@@ -47,3 +47,23 @@ Um usuário possui uma lista de favoritos, mas os conteúdos continuam existindo
 ### Composição
 
 As avaliações dependem da existência de um filme ou série para existirem no sistema.
+
+## Aplicação do SRP (Single Responsibility Principle)
+
+- Usuario: responsável apenas pelos dados do usuário.
+- Conteudo: responsável apenas pelos dados dos filmes e séries.
+- Avaliacao: responsável apenas pelas avaliações realizadas pelos usuários.
+- Favorito: responsável apenas pelo gerenciamento dos conteúdos favoritados.
+- ListaAssistirDepois: responsável apenas pelo gerenciamento da lista de conteúdos para assistir futuramente.
+
+## Aplicação do DIP (Dependency Inversion Principle)
+
+As classes Avaliacao, Favorito e ListaAssistirDepois devem depender de abstrações relacionadas ao conteúdo, e não diretamente da implementação da classe Conteudo.
+
+Exemplo:
+
+Avaliacao → IConteudo
+
+Favorito → IConteudo
+
+ListaAssistirDepois → IConteudo
