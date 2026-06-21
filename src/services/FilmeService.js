@@ -1,24 +1,28 @@
-import Filme from "../models/Filme.js";
+import db from "../db.js";
 
 class FilmeService {
-  constructor() {
-    this.filmes = [];
-    this.proximoId = 1;
-  }
-
   listar() {
-    return this.filmes;
+    return db.prepare("SELECT * FROM filmes").all();
   }
 
   buscarPorId(id) {
-    return this.filmes.find((filme) => filme.id === Number(id));
+    return db.prepare("SELECT * FROM filmes WHERE id = ?").get(Number(id));
   }
 
   adicionar(titulo, genero, ano, descricao) {
-    const filme = new Filme(this.proximoId++, titulo, genero, ano, descricao);
+    const result = db
+      .prepare(
+        "INSERT INTO filmes(titulo, genero, ano, descricao) VALUES (?, ?, ?, ?)",
+      )
+      .run(titulo, genero, Number(ano), descricao ?? null);
 
-    this.filmes.push(filme);
-    return filme;
+    return {
+      id: result.lastInsertRowid,
+      titulo,
+      genero,
+      ano: Number(ano),
+      descricao: descricao ?? null,
+    };
   }
 
   atualizar(id, dados) {
@@ -28,23 +32,30 @@ class FilmeService {
       return null;
     }
 
-    filme.titulo = dados.titulo ?? filme.titulo;
-    filme.genero = dados.genero ?? filme.genero;
-    filme.ano = dados.ano ?? filme.ano;
-    filme.descricao = dados.descricao ?? filme.descricao;
+    const titulo = dados.titulo ?? filme.titulo;
+    const genero = dados.genero ?? filme.genero;
+    const ano = dados.ano !== undefined ? Number(dados.ano) : filme.ano;
+    const descricao = dados.descricao ?? filme.descricao;
 
-    return filme;
+    db.prepare(
+      "UPDATE filmes SET titulo = ?, genero = ?, ano = ?, descricao = ? WHERE id = ?",
+    ).run(titulo, genero, ano, descricao, Number(id));
+
+    return {
+      id: Number(id),
+      titulo,
+      genero,
+      ano,
+      descricao,
+    };
   }
 
   remover(id) {
-    const indice = this.filmes.findIndex((filme) => filme.id === Number(id));
+    const result = db
+      .prepare("DELETE FROM filmes WHERE id = ?")
+      .run(Number(id));
 
-    if (indice === -1) {
-      return false;
-    }
-
-    this.filmes.splice(indice, 1);
-    return true;
+    return result.changes > 0;
   }
 }
 

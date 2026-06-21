@@ -1,37 +1,31 @@
-import Favorito from "../models/Favorito.js";
+import db from "../db.js";
 
 class FavoritoService {
-  constructor() {
-    this.favoritos = [];
-    this.proximoId = 1;
-  }
-
   listar() {
-    return this.favoritos;
+    return db.prepare("SELECT * FROM favoritos").all();
   }
 
   buscarPorId(id) {
-    return this.favoritos.find((favorito) => favorito.id === Number(id));
+    return db.prepare("SELECT * FROM favoritos WHERE id = ?").get(Number(id));
   }
 
   adicionar(conteudoId) {
-    const favorito = new Favorito(this.proximoId++, conteudoId);
+    const result = db
+      .prepare("INSERT INTO favoritos(conteudoId) VALUES (?)")
+      .run(Number(conteudoId));
 
-    this.favoritos.push(favorito);
-    return favorito;
+    return {
+      id: result.lastInsertRowid,
+      conteudoId: Number(conteudoId),
+    };
   }
 
   remover(id) {
-    const indice = this.favoritos.findIndex(
-      (favorito) => favorito.id === Number(id),
-    );
+    const result = db
+      .prepare("DELETE FROM favoritos WHERE id = ?")
+      .run(Number(id));
 
-    if (indice === -1) {
-      return false;
-    }
-
-    this.favoritos.splice(indice, 1);
-    return true;
+    return result.changes > 0;
   }
 }
 
