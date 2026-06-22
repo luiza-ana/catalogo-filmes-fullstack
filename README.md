@@ -1,49 +1,126 @@
 # Catálogo de Filmes e Séries
 
-## Objetivo
+## Descrição
 
-Desenvolver um sistema fullstack para cadastro e gerenciamento de filmes e séries assistidos pelos usuários.
+Sistema fullstack desenvolvido para cadastro e gerenciamento de filmes e séries. O projeto permite cadastrar conteúdos, favoritar filmes e manter os dados persistidos utilizando SQLite.
 
-## Funcionalidades iniciais
+## Tecnologias Utilizadas
 
-- Adicionar filmes e séries
-- Marcar conteúdos como assistidos
-- Favoritar filmes e séries
-- Criar lista “assistir depois”
-- Avaliar filmes e séries
+- Node.js
+- Express
+- SQLite
+- HTML5
+- CSS3
+- Bootstrap 5
+- JavaScript (Vanilla JS)
 
-## Classes do sistema
+## Pré-requisitos
 
-### Usuario
+- Node.js 22+ (recomendado)
+- NPM
 
-Responsável pelos dados do usuário do sistema.
+## Instalação
 
-### Conteudo
+Clone o repositório:
 
-Armazena informações dos filmes e séries cadastrados na plataforma.
+```bash
+git clone https://github.com/luiza-ana/catalogo-filmes-fullstack.git
+```
 
-### Avaliacao
+Entre na pasta do projeto:
 
-Responsável pelas notas e comentários realizados pelos usuários sobre filmes e séries.
+```bash
+cd catalogo-filmes-fullstack
+```
 
-### Favorito
+Instale as dependências:
 
-Gerencia os conteúdos favoritados pelos usuários.
+```bash
+npm install
+```
 
-### ListaAssistirDepois
+## Como Executar o Backend
 
-Armazena os filmes e séries que o usuário deseja assistir futuramente.
+```bash
+npm run dev
+```
 
-## Relações entre classes
+Servidor disponível em:
 
-### Associação
+```text
+http://localhost:3000
+```
 
-Um usuário pode interagir com vários filmes e séries cadastrados no sistema.
+## Como Executar o Frontend
 
-### Agregação
+Entre na pasta frontend:
 
-Um usuário possui uma lista de favoritos, mas os conteúdos continuam existindo independentemente dela.
+```bash
+cd frontend
+```
 
-### Composição
+Execute:
 
-As avaliações dependem da existência de um filme ou série para existirem no sistema.
+```bash
+http-server -p 5500 -c-1
+```
+
+Acesse:
+
+```text
+http://localhost:5500
+```
+
+## Endpoints da API
+
+### Filmes
+
+| Método | Rota        | Descrição             |
+| ------ | ----------- | --------------------- |
+| GET    | /filmes     | Lista todos os filmes |
+| GET    | /filmes/:id | Busca um filme por ID |
+| POST   | /filmes     | Adiciona um filme     |
+| PUT    | /filmes/:id | Atualiza um filme     |
+| DELETE | /filmes/:id | Remove um filme       |
+
+### Favoritos
+
+| Método | Rota           | Descrição             |
+| ------ | -------------- | --------------------- |
+| GET    | /favoritos     | Lista favoritos       |
+| GET    | /favoritos/:id | Busca favorito por ID |
+| POST   | /favoritos     | Adiciona favorito     |
+| DELETE | /favoritos/:id | Remove favorito       |
+
+## Estrutura do Projeto
+
+```text
+src/
+├── controllers/
+├── middleware/
+├── models/
+├── routes/
+├── services/
+├── db.js
+├── app.js
+└── server.js
+
+frontend/
+├── css/
+├── js/
+└── index.html
+```
+
+## Persistência
+
+O projeto utiliza SQLite para armazenamento dos dados. As informações permanecem salvas mesmo após reiniciar o servidor.
+
+## Autor
+
+Ana Luiza Pereira Tenório
+
+Curso de Ciência da Computação – UEPB
+
+## Licença
+
+Projeto acadêmico desenvolvido para a disciplina de Desenvolvimento Web.

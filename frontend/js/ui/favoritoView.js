@@ -18,7 +18,7 @@ export const favoritoView = {
     });
   },
 
-  renderLista(favoritos, aoRemover) {
+  renderLista(favoritos, filmes, aoRemover) {
     lista.innerHTML = "";
 
     if (favoritos.length === 0) {
@@ -26,18 +26,24 @@ export const favoritoView = {
       return;
     }
 
+    const filmesPorId = new Map(filmes.map((filme) => [filme.id, filme]));
+
     favoritos.forEach((favorito) => {
       const li = document.createElement("li");
 
       li.className =
         "list-group-item d-flex justify-content-between align-items-center";
 
-      li.innerHTML = `<span>Conteúdo ID: ${favorito.conteudoId}</span>`;
+      const filme = filmesPorId.get(Number(favorito.conteudoId));
+      const conteudoTexto = filme
+        ? filme.titulo
+        : `Conteúdo ID: ${favorito.conteudoId}`;
+
+      li.innerHTML = `<span>${conteudoTexto}</span>`;
 
       const btn = document.createElement("button");
 
       btn.className = "btn btn-sm btn-danger";
-
       btn.textContent = "Remover";
 
       btn.addEventListener("click", () => {
@@ -45,7 +51,6 @@ export const favoritoView = {
       });
 
       li.appendChild(btn);
-
       lista.appendChild(li);
     });
   },

@@ -5,6 +5,7 @@ import { filmeView } from "./ui/filmeView.js";
 import { favoritoView } from "./ui/favoritoView.js";
 
 const alerta = document.querySelector("#alerta");
+let filmesCache = [];
 
 function mostrarErro(mensagem) {
   alerta.textContent = mensagem;
@@ -25,6 +26,7 @@ async function atualizarFilmes() {
     throw new Error("Resposta inválida ao carregar filmes");
   }
 
+  filmesCache = filmes;
   filmeView.renderLista(filmes, removerFilme);
   favoritoView.preencherSelect(filmes);
 }
@@ -57,7 +59,7 @@ async function removerFilme(id) {
 async function atualizarFavoritos() {
   const favoritos = await favoritoService.listar();
 
-  favoritoView.renderLista(favoritos, removerFavorito);
+  favoritoView.renderLista(favoritos, filmesCache, removerFavorito);
 }
 
 async function criarFavorito(dados) {
